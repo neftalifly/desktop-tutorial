@@ -94,15 +94,14 @@ img {
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background: rgba(6, 6, 12, 0.8);
-  backdrop-filter: blur(16px);
+  background: var(--bg-elevated);
   border-bottom: 1px solid var(--border);
   z-index: 1000;
-  transition: background 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .header--scrolled {
-  background: rgba(6, 6, 12, 0.95);
+  background: var(--bg-elevated);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
@@ -915,9 +914,10 @@ img {
     flex-direction: column;
     justify-content: center;
     gap: 32px;
-    background: rgba(6, 6, 12, 0.97);
+    background: var(--bg-elevated);
     transform: translateX(100%);
     transition: transform 0.35s ease;
+    z-index: 1000;
   }
 
   .nav--open {
