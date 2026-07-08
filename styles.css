@@ -12,14 +12,14 @@ body {
   align-items: center;
   justify-content: center;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 45%, #ffc2d6 100%);
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 45%, #66bb6a 100%);
   color: #fff;
 }
 
 .calculator {
   width: min(360px, 92vw);
-  background: rgba(255, 255, 255, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
