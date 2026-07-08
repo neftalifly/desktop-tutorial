@@ -118,8 +118,9 @@ img {
 }
 
 .logo__img {
+  height: 48px;
+  width: auto;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(43, 140, 255, 0.25));
 }
 
 .logo__accent {
