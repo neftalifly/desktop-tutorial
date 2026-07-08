@@ -116,7 +116,7 @@ function drawParticles() {
 
     pCtx.beginPath();
     pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    pCtx.fillStyle = `rgba(0, 240, 255, ${p.opacity})`;
+    pCtx.fillStyle = `rgba(43, 140, 255, ${p.opacity * 0.6})`;
     pCtx.fill();
   });
 
@@ -159,7 +159,7 @@ function initHero3D() {
 
   const geometry = new THREE.IcosahedronGeometry(1.2, 1);
   const material = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
+    color: 0x2b8cff,
     wireframe: true,
   });
   const mesh = new THREE.Mesh(geometry, material);
@@ -167,14 +167,14 @@ function initHero3D() {
 
   const innerGeo = new THREE.OctahedronGeometry(0.7, 0);
   const innerMat = new THREE.MeshBasicMaterial({
-    color: 0xff00aa,
+    color: 0xff8c00,
     wireframe: true,
   });
   const innerMesh = new THREE.Mesh(innerGeo, innerMat);
   scene.add(innerMesh);
 
   const ringGeo = new THREE.TorusGeometry(1.8, 0.02, 8, 64);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0x7b2fff });
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x1e5fd9 });
   const ring = new THREE.Mesh(ringGeo, ringMat);
   ring.rotation.x = Math.PI / 2;
   scene.add(ring);
