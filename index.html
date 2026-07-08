@@ -2,103 +2,47 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>Teleprompter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="setup-screen" class="screen screen--active">
-  <header class="header">
-    <h1>Teleprompter</h1>
-    <p class="header__subtitle">Escribe tu guion, activa la cámara y graba mientras lees</p>
-  </header>
-
-  <section class="panel">
-    <label class="label" for="script-input">Tu guion</label>
-    <textarea
-      id="script-input"
-      class="script-input"
-      placeholder="Escribe aquí el texto que vas a decir frente a la cámara..."
-      rows="10"
-    ></textarea>
-  </section>
-
-  <section class="panel panel--controls">
-    <div class="control">
-      <label class="label" for="speed-range">Velocidad de lectura</label>
-      <div class="control__row">
-        <input type="range" id="speed-range" min="1" max="10" value="4">
-        <span id="speed-value" class="control__value">4</span>
-      </div>
-    </div>
-
-    <div class="control">
-      <label class="label" for="font-range">Tamaño del texto</label>
-      <div class="control__row">
-        <input type="range" id="font-range" min="16" max="48" value="28">
-        <span id="font-value" class="control__value">28px</span>
-      </div>
-    </div>
-
-    <label class="checkbox">
-      <input type="checkbox" id="mirror-toggle" checked>
-      <span>Espejar texto (recomendado con cámara frontal)</span>
-    </label>
-  </section>
-
-  <button type="button" id="start-btn" class="btn btn--primary">
-    Activar cámara
-  </button>
-
-  <p class="hint">Necesitas HTTPS y permisos de cámara y micrófono. Funciona mejor en el navegador del teléfono.</p>
-  </div>
-
-  <div id="prompter-screen" class="screen" hidden>
-    <video id="camera-preview" class="camera-preview" autoplay playsinline muted></video>
-
-    <div id="prompter-overlay" class="prompter-overlay">
-      <div id="prompter-text" class="prompter-text"></div>
-    </div>
-
-    <div class="top-bar">
-      <button type="button" id="back-btn" class="btn btn--ghost" aria-label="Volver">← Volver</button>
-      <span id="recording-badge" class="recording-badge" hidden>
-        <span class="recording-badge__dot"></span>
-        REC
-      </span>
-    </div>
-
-    <div class="bottom-bar">
-      <button type="button" id="scroll-toggle-btn" class="btn btn--secondary">
-        ▶ Iniciar lectura
-      </button>
-      <button type="button" id="record-btn" class="btn btn--record">
-        ● Grabar
-      </button>
-      <button type="button" id="flip-camera-btn" class="btn btn--ghost" aria-label="Cambiar cámara">🔄</button>
-    </div>
-  </div>
-
-  <div id="result-screen" class="screen" hidden>
-    <header class="header">
-      <h1>¡Listo!</h1>
-      <p class="header__subtitle">Tu video se grabó correctamente</p>
+  <main class="calculator">
+    <header class="calculator__header">
+      <h1>Calculadora</h1>
     </header>
 
-    <video id="result-video" class="result-video" controls playsinline></video>
-
-    <div class="result-actions">
-      <a id="download-link" class="btn btn--primary" download="teleprompter-video.webm">
-        Descargar video
-      </a>
-      <button type="button" id="new-recording-btn" class="btn btn--secondary">
-        Nueva grabación
-      </button>
+    <div class="calculator__display" aria-live="polite">
+      <div class="calculator__expression" id="expression"></div>
+      <div class="calculator__result" id="display">0</div>
     </div>
-  </div>
 
-  <p id="status-message" class="status-message" role="status" aria-live="polite"></p>
+    <div class="calculator__keys">
+      <button type="button" class="key key--function" data-action="clear">C</button>
+      <button type="button" class="key key--function" data-action="delete">⌫</button>
+      <button type="button" class="key key--function" data-action="percent">%</button>
+      <button type="button" class="key key--operator" data-action="operator" data-value="/">÷</button>
+
+      <button type="button" class="key key--number" data-action="number" data-value="7">7</button>
+      <button type="button" class="key key--number" data-action="number" data-value="8">8</button>
+      <button type="button" class="key key--number" data-action="number" data-value="9">9</button>
+      <button type="button" class="key key--operator" data-action="operator" data-value="*">×</button>
+
+      <button type="button" class="key key--number" data-action="number" data-value="4">4</button>
+      <button type="button" class="key key--number" data-action="number" data-value="5">5</button>
+      <button type="button" class="key key--number" data-action="number" data-value="6">6</button>
+      <button type="button" class="key key--operator" data-action="operator" data-value="-">−</button>
+
+      <button type="button" class="key key--number" data-action="number" data-value="1">1</button>
+      <button type="button" class="key key--number" data-action="number" data-value="2">2</button>
+      <button type="button" class="key key--number" data-action="number" data-value="3">3</button>
+      <button type="button" class="key key--operator" data-action="operator" data-value="+">+</button>
+
+      <button type="button" class="key key--number key--zero" data-action="number" data-value="0">0</button>
+      <button type="button" class="key key--number" data-action="decimal">.</button>
+      <button type="button" class="key key--equals" data-action="equals">=</button>
+    </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
