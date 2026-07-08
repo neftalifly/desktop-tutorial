@@ -68,17 +68,57 @@ const statsObserver = new IntersectionObserver(
 const statsEl = document.querySelector(".hero__stats");
 if (statsEl) statsObserver.observe(statsEl);
 
+/* ===== CONTACTO & REDES ===== */
+const CONTACT = {
+  whatsapp: "522225047271",
+  social: {
+    tiktok: "",
+    instagram: "",
+    facebook: "",
+  },
+};
+
+document.querySelectorAll("[data-social]").forEach((link) => {
+  const platform = link.dataset.social;
+  const url = CONTACT.social[platform];
+
+  if (url) {
+    link.href = url;
+  } else {
+    link.href = "#";
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (formStatus) {
+        formStatus.textContent = `Pronto agregamos el enlace de ${platform}.`;
+        setTimeout(() => { formStatus.textContent = ""; }, 3000);
+      }
+    });
+  }
+});
+
 /* ===== CONTACT FORM ===== */
 const contactForm = document.getElementById("contact-form");
 const formStatus = document.getElementById("form-status");
 
 contactForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  formStatus.textContent = "✓ Solicitud recibida. Te contactaremos pronto.";
+
+  const data = new FormData(contactForm);
+  const nombre = data.get("nombre");
+  const email = data.get("email");
+  const tipo = data.get("tipo");
+  const mensaje = data.get("mensaje");
+
+  const texto = `Hola, soy ${nombre}.\nEmail: ${email}\nProyecto: ${tipo}\n\n${mensaje}`;
+  const url = `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(texto)}`;
+
+  window.open(url, "_blank", "noopener,noreferrer");
+  formStatus.textContent = "✓ Abriendo WhatsApp...";
   contactForm.reset();
+
   setTimeout(() => {
     formStatus.textContent = "";
-  }, 5000);
+  }, 4000);
 });
 
 /* ===== PARTICLES ===== */
