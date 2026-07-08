@@ -1,3 +1,45 @@
+/* ===== SCROLL & ANCLAS ===== */
+const SCROLL_KEY = "avss-scroll-y";
+
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+
+function saveScrollPosition() {
+  sessionStorage.setItem(SCROLL_KEY, String(window.scrollY));
+}
+
+window.addEventListener("pagehide", saveScrollPosition);
+window.addEventListener("beforeunload", saveScrollPosition);
+
+window.addEventListener("load", () => {
+  if (location.hash) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+
+  const saved = sessionStorage.getItem(SCROLL_KEY);
+  if (saved !== null) {
+    requestAnimationFrame(() => {
+      window.scrollTo(0, parseInt(saved, 10));
+    });
+  }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  const href = anchor.getAttribute("href");
+  if (!href || href === "#") return;
+
+  anchor.addEventListener("click", (e) => {
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth" });
+    history.replaceState(null, "", location.pathname + location.search);
+    saveScrollPosition();
+  });
+});
+
 /* ===== NAV ===== */
 const header = document.getElementById("header");
 const navToggle = document.getElementById("nav-toggle");
