@@ -1,224 +1,232 @@
-const displayEl = document.getElementById("display");
-const expressionEl = document.getElementById("expression");
-const keysEl = document.querySelector(".calculator__keys");
+/* ===== NAV ===== */
+const header = document.getElementById("header");
+const navToggle = document.getElementById("nav-toggle");
+const nav = document.getElementById("nav");
 
-let currentValue = "0";
-let previousValue = "";
-let operator = null;
-let shouldResetDisplay = false;
+navToggle.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("nav--open");
+  navToggle.classList.toggle("nav-toggle--active", isOpen);
+  navToggle.setAttribute("aria-expanded", isOpen);
+});
 
-function updateDisplay() {
-  displayEl.textContent = currentValue;
-  displayEl.classList.toggle("calculator__result--error", currentValue === "Error");
-}
+nav.querySelectorAll(".nav__link").forEach((link) => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("nav--open");
+    navToggle.classList.remove("nav-toggle--active");
+    navToggle.setAttribute("aria-expanded", "false");
+  });
+});
 
-function updateExpression() {
-  if (operator && previousValue !== "") {
-    const symbol = { "+": "+", "-": "−", "*": "×", "/": "÷" }[operator];
-    expressionEl.textContent = `${previousValue} ${symbol}`;
-  } else {
-    expressionEl.textContent = "";
-  }
-}
+window.addEventListener("scroll", () => {
+  header.classList.toggle("header--scrolled", window.scrollY > 40);
+}, { passive: true });
 
-function clearAll() {
-  currentValue = "0";
-  previousValue = "";
-  operator = null;
-  shouldResetDisplay = false;
-  updateDisplay();
-  updateExpression();
-}
+/* ===== SCROLL REVEAL ===== */
+const revealEls = document.querySelectorAll(".reveal");
 
-function deleteLast() {
-  if (currentValue === "Error") {
-    clearAll();
-    return;
-  }
-
-  if (currentValue.length <= 1) {
-    currentValue = "0";
-  } else {
-    currentValue = currentValue.slice(0, -1);
-  }
-  updateDisplay();
-}
-
-function appendNumber(digit) {
-  if (currentValue === "Error" || shouldResetDisplay) {
-    currentValue = digit;
-    shouldResetDisplay = false;
-  } else if (currentValue === "0") {
-    currentValue = digit;
-  } else if (currentValue.length < 12) {
-    currentValue += digit;
-  }
-  updateDisplay();
-}
-
-function appendDecimal() {
-  if (currentValue === "Error" || shouldResetDisplay) {
-    currentValue = "0.";
-    shouldResetDisplay = false;
-  } else if (!currentValue.includes(".")) {
-    currentValue += ".";
-  }
-  updateDisplay();
-}
-
-function applyPercent() {
-  if (currentValue === "Error") return;
-
-  const value = parseFloat(currentValue);
-  if (Number.isNaN(value)) return;
-
-  currentValue = String(value / 100);
-  updateDisplay();
-}
-
-function setOperator(nextOperator) {
-  if (currentValue === "Error") return;
-
-  if (operator && !shouldResetDisplay) {
-    calculate();
-    if (currentValue === "Error") return;
-  }
-
-  previousValue = currentValue;
-  operator = nextOperator;
-  shouldResetDisplay = true;
-  updateExpression();
-}
-
-function calculate() {
-  if (!operator || previousValue === "" || currentValue === "Error") return;
-
-  const a = parseFloat(previousValue);
-  const b = parseFloat(currentValue);
-
-  if (Number.isNaN(a) || Number.isNaN(b)) {
-    currentValue = "Error";
-    updateDisplay();
-    return;
-  }
-
-  let result;
-
-  switch (operator) {
-    case "+":
-      result = a + b;
-      break;
-    case "-":
-      result = a - b;
-      break;
-    case "*":
-      result = a * b;
-      break;
-    case "/":
-      if (b === 0) {
-        currentValue = "Error";
-        previousValue = "";
-        operator = null;
-        updateDisplay();
-        updateExpression();
-        return;
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal--visible");
       }
-      result = a / b;
-      break;
-    default:
-      return;
+    });
+  },
+  { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+);
+
+revealEls.forEach((el) => revealObserver.observe(el));
+
+/* ===== COUNTER ANIMATION ===== */
+function animateCounter(el) {
+  const target = Number(el.dataset.target);
+  const duration = 1800;
+  const start = performance.now();
+
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) requestAnimationFrame(tick);
   }
 
-  currentValue = formatResult(result);
-  previousValue = "";
-  operator = null;
-  shouldResetDisplay = true;
-  updateDisplay();
-  updateExpression();
+  requestAnimationFrame(tick);
 }
 
-function formatResult(value) {
-  const rounded = Math.round(value * 1e10) / 1e10;
-  const text = String(rounded);
+const statsObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll(".stat__number").forEach(animateCounter);
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
 
-  if (text.length > 12) {
-    return rounded.toExponential(5);
-  }
+const statsEl = document.querySelector(".hero__stats");
+if (statsEl) statsObserver.observe(statsEl);
 
-  return text;
+/* ===== CONTACT FORM ===== */
+const contactForm = document.getElementById("contact-form");
+const formStatus = document.getElementById("form-status");
+
+contactForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  formStatus.textContent = "✓ Solicitud recibida. Te contactaremos pronto.";
+  contactForm.reset();
+  setTimeout(() => {
+    formStatus.textContent = "";
+  }, 5000);
+});
+
+/* ===== PARTICLES ===== */
+const particlesCanvas = document.getElementById("particles-canvas");
+const pCtx = particlesCanvas.getContext("2d");
+let particles = [];
+
+function resizeParticles() {
+  particlesCanvas.width = window.innerWidth;
+  particlesCanvas.height = window.innerHeight;
 }
 
-function handleKeyClick(event) {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const { action, value } = button.dataset;
-
-  switch (action) {
-    case "clear":
-      clearAll();
-      break;
-    case "delete":
-      deleteLast();
-      break;
-    case "percent":
-      applyPercent();
-      break;
-    case "number":
-      appendNumber(value);
-      break;
-    case "decimal":
-      appendDecimal();
-      break;
-    case "operator":
-      setOperator(value);
-      break;
-    case "equals":
-      calculate();
-      break;
-  }
+function initParticles() {
+  particles = Array.from({ length: 60 }, () => ({
+    x: Math.random() * particlesCanvas.width,
+    y: Math.random() * particlesCanvas.height,
+    size: Math.random() * 2 + 0.5,
+    speedX: (Math.random() - 0.5) * 0.4,
+    speedY: (Math.random() - 0.5) * 0.4,
+    opacity: Math.random() * 0.5 + 0.1,
+  }));
 }
 
-function handleKeyboard(event) {
-  const { key } = event;
+function drawParticles() {
+  pCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
 
-  if (/^\d$/.test(key)) {
-    appendNumber(key);
-    return;
-  }
+  particles.forEach((p) => {
+    p.x += p.speedX;
+    p.y += p.speedY;
 
-  if (key === ".") {
-    appendDecimal();
-    return;
-  }
+    if (p.x < 0) p.x = particlesCanvas.width;
+    if (p.x > particlesCanvas.width) p.x = 0;
+    if (p.y < 0) p.y = particlesCanvas.height;
+    if (p.y > particlesCanvas.height) p.y = 0;
 
-  if (key === "+" || key === "-" || key === "*" || key === "/") {
-    setOperator(key);
-    return;
-  }
+    pCtx.beginPath();
+    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    pCtx.fillStyle = `rgba(0, 240, 255, ${p.opacity})`;
+    pCtx.fill();
+  });
 
-  if (key === "Enter" || key === "=") {
-    event.preventDefault();
-    calculate();
-    return;
-  }
-
-  if (key === "Escape") {
-    clearAll();
-    return;
-  }
-
-  if (key === "Backspace") {
-    deleteLast();
-    return;
-  }
-
-  if (key === "%") {
-    applyPercent();
-  }
+  requestAnimationFrame(drawParticles);
 }
 
-keysEl.addEventListener("click", handleKeyClick);
-document.addEventListener("keydown", handleKeyboard);
+resizeParticles();
+initParticles();
+drawParticles();
 
-updateDisplay();
+window.addEventListener("resize", () => {
+  resizeParticles();
+  initParticles();
+});
+
+/* ===== THREE.JS HERO ===== */
+function initHero3D() {
+  const canvas = document.getElementById("hero-3d");
+  if (!canvas || typeof THREE === "undefined") return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.z = 4;
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: true,
+  });
+
+  function resizeRenderer() {
+    const size = canvas.clientWidth;
+    renderer.setSize(size, size);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    camera.aspect = 1;
+    camera.updateProjectionMatrix();
+  }
+
+  resizeRenderer();
+
+  const geometry = new THREE.IcosahedronGeometry(1.2, 1);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0x00f0ff,
+    wireframe: true,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+
+  const innerGeo = new THREE.OctahedronGeometry(0.7, 0);
+  const innerMat = new THREE.MeshBasicMaterial({
+    color: 0xff00aa,
+    wireframe: true,
+  });
+  const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+  scene.add(innerMesh);
+
+  const ringGeo = new THREE.TorusGeometry(1.8, 0.02, 8, 64);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x7b2fff });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  scene.add(ring);
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  canvas.addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+  });
+
+  canvas.addEventListener("touchmove", (e) => {
+    if (!e.touches[0]) return;
+    const rect = canvas.getBoundingClientRect();
+    mouseX = ((e.touches[0].clientX - rect.left) / rect.width - 0.5) * 2;
+    mouseY = ((e.touches[0].clientY - rect.top) / rect.height - 0.5) * 2;
+  }, { passive: true });
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    mesh.rotation.x += 0.004;
+    mesh.rotation.y += 0.006;
+    innerMesh.rotation.x -= 0.008;
+    innerMesh.rotation.y -= 0.005;
+    ring.rotation.z += 0.003;
+
+    mesh.rotation.y += mouseX * 0.02;
+    mesh.rotation.x += mouseY * 0.02;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  window.addEventListener("resize", resizeRenderer);
+}
+
+initHero3D();
+
+/* ===== GALLERY TILT ===== */
+document.querySelectorAll(".gallery__item").forEach((item) => {
+  item.addEventListener("mousemove", (e) => {
+    const rect = item.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    item.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.02)`;
+  });
+
+  item.addEventListener("mouseleave", () => {
+    item.style.transform = "";
+  });
+});

@@ -3,47 +3,279 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora</title>
-  <link rel="stylesheet" href="styles.css?v=2">
+  <meta name="description" content="Estudio de modelos 3D para juegos, cinemáticas y metaverso. Calidad next-gen.">
+  <title>NEXUS 3D — Modelos de Alto Impacto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1">
 </head>
 <body>
-  <main class="calculator">
-    <header class="calculator__header">
-      <h1>Calculadora</h1>
-    </header>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
 
-    <div class="calculator__display" aria-live="polite">
-      <div class="calculator__expression" id="expression"></div>
-      <div class="calculator__result" id="display">0</div>
-    </div>
+  <header class="header" id="header">
+    <a href="#" class="logo">
+      <span class="logo__icon">◈</span>
+      <span class="logo__text">NEXUS<span class="logo__accent">3D</span></span>
+    </a>
 
-    <div class="calculator__keys">
-      <button type="button" class="key key--function" data-action="clear">C</button>
-      <button type="button" class="key key--function" data-action="delete">⌫</button>
-      <button type="button" class="key key--function" data-action="percent">%</button>
-      <button type="button" class="key key--operator" data-action="operator" data-value="/">÷</button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
 
-      <button type="button" class="key key--number" data-action="number" data-value="7">7</button>
-      <button type="button" class="key key--number" data-action="number" data-value="8">8</button>
-      <button type="button" class="key key--number" data-action="number" data-value="9">9</button>
-      <button type="button" class="key key--operator" data-action="operator" data-value="*">×</button>
+    <nav class="nav" id="nav">
+      <a href="#servicios" class="nav__link">Servicios</a>
+      <a href="#portafolio" class="nav__link">Portafolio</a>
+      <a href="#proceso" class="nav__link">Proceso</a>
+      <a href="#contacto" class="nav__link nav__link--cta">Cotizar</a>
+    </nav>
+  </header>
 
-      <button type="button" class="key key--number" data-action="number" data-value="4">4</button>
-      <button type="button" class="key key--number" data-action="number" data-value="5">5</button>
-      <button type="button" class="key key--number" data-action="number" data-value="6">6</button>
-      <button type="button" class="key key--operator" data-action="operator" data-value="-">−</button>
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero__content">
+        <p class="hero__tag reveal">// ESTUDIO DE ASSETS 3D</p>
+        <h1 class="hero__title reveal">
+          <span class="glitch" data-text="MODELOS 3D">MODELOS 3D</span>
+          <span class="hero__title-line">QUE DOMINAN</span>
+          <span class="hero__title-line hero__title-line--accent">CADA ESCENA</span>
+        </h1>
+        <p class="hero__desc reveal">
+          Personajes, props, entornos y vehículos con calidad AAA para juegos,
+          trailers, metaverso y experiencias inmersivas.
+        </p>
+        <div class="hero__actions reveal">
+          <a href="#portafolio" class="btn btn--primary">Ver portafolio</a>
+          <a href="#contacto" class="btn btn--ghost">Solicitar demo</a>
+        </div>
+        <div class="hero__stats reveal">
+          <div class="stat">
+            <span class="stat__number" data-target="120">0</span>
+            <span class="stat__label">Proyectos</span>
+          </div>
+          <div class="stat">
+            <span class="stat__number" data-target="48">0</span>
+            <span class="stat__label">Clientes</span>
+          </div>
+          <div class="stat">
+            <span class="stat__number" data-target="15">0</span>
+            <span class="stat__label">Países</span>
+          </div>
+        </div>
+      </div>
 
-      <button type="button" class="key key--number" data-action="number" data-value="1">1</button>
-      <button type="button" class="key key--number" data-action="number" data-value="2">2</button>
-      <button type="button" class="key key--number" data-action="number" data-value="3">3</button>
-      <button type="button" class="key key--operator" data-action="operator" data-value="+">+</button>
+      <div class="hero__visual reveal">
+        <div class="hero__canvas-wrap">
+          <canvas id="hero-3d" aria-label="Visualización 3D interactiva"></canvas>
+          <div class="hero__canvas-frame"></div>
+        </div>
+        <div class="hero__badge">
+          <span class="hero__badge-dot"></span>
+          RENDER EN VIVO
+        </div>
+      </div>
+    </section>
 
-      <button type="button" class="key key--number key--zero" data-action="number" data-value="0">0</button>
-      <button type="button" class="key key--number" data-action="decimal">.</button>
-      <button type="button" class="key key--equals" data-action="equals">=</button>
-    </div>
+    <section class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>CHARACTER ART</span><span>◆</span>
+        <span>HARD SURFACE</span><span>◆</span>
+        <span>ENVIRONMENT</span><span>◆</span>
+        <span>PBR TEXTURES</span><span>◆</span>
+        <span>RIG & ANIMATE</span><span>◆</span>
+        <span>UNREAL ENGINE</span><span>◆</span>
+        <span>BLENDER</span><span>◆</span>
+        <span>CHARACTER ART</span><span>◆</span>
+        <span>HARD SURFACE</span><span>◆</span>
+        <span>ENVIRONMENT</span><span>◆</span>
+        <span>PBR TEXTURES</span><span>◆</span>
+      </div>
+    </section>
+
+    <section class="section" id="servicios">
+      <div class="section__header reveal">
+        <p class="section__tag">// SERVICIOS</p>
+        <h2 class="section__title">Arsenal creativo <span class="text-accent">next-gen</span></h2>
+      </div>
+
+      <div class="cards">
+        <article class="card reveal">
+          <div class="card__icon">01</div>
+          <h3 class="card__title">Personajes</h3>
+          <p class="card__text">Héroes, NPCs y criaturas con topología limpia, UVs optimizadas y materiales PBR listos para engine.</p>
+          <ul class="card__tags">
+            <li>ZBrush</li>
+            <li>Substance</li>
+            <li>Rigging</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card__icon">02</div>
+          <h3 class="card__title">Props & Armas</h3>
+          <p class="card__text">Hard surface con detalle micro, wear & tear, y LODs para rendimiento en tiempo real sin perder impacto visual.</p>
+          <ul class="card__tags">
+            <li>LOD</li>
+            <li>PBR</li>
+            <li>Game-ready</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card__icon">03</div>
+          <h3 class="card__title">Entornos</h3>
+          <p class="card__text">Escenarios modulares, iluminación baked o dinámica, atmósfera cinematográfica para mundos que respiran.</p>
+          <ul class="card__tags">
+            <li>Modular</li>
+            <li>Lighting</li>
+            <li>Worldbuilding</li>
+          </ul>
+        </article>
+
+        <article class="card reveal">
+          <div class="card__icon">04</div>
+          <h3 class="card__title">Animación</h3>
+          <p class="card__text">Rigs completos, locomoción, combate y cinemáticas. Exportación a Unity, Unreal y pipelines custom.</p>
+          <ul class="card__tags">
+            <li>Mocap-ready</li>
+            <li>IK/FK</li>
+            <li>FBX/GLTF</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="portafolio">
+      <div class="section__header reveal">
+        <p class="section__tag">// PORTAFOLIO</p>
+        <h2 class="section__title">Piezas que <span class="text-accent">hablan solas</span></h2>
+      </div>
+
+      <div class="gallery">
+        <article class="gallery__item reveal" data-category="character">
+          <div class="gallery__visual gallery__visual--cyber">
+            <span class="gallery__label">PERSONAJE</span>
+          </div>
+          <div class="gallery__info">
+            <h3>Cyber Ronin</h3>
+            <p>8K textures · 42K tris · UE5</p>
+          </div>
+        </article>
+
+        <article class="gallery__item reveal" data-category="weapon">
+          <div class="gallery__visual gallery__visual--weapon">
+            <span class="gallery__label">ARMA</span>
+          </div>
+          <div class="gallery__info">
+            <h3>Plasma Rifle MK-IV</h3>
+            <p>PBR · 3 LODs · Animated</p>
+          </div>
+        </article>
+
+        <article class="gallery__item reveal" data-category="environment">
+          <div class="gallery__visual gallery__visual--env">
+            <span class="gallery__label">ENTORNO</span>
+          </div>
+          <div class="gallery__info">
+            <h3>Neon District</h3>
+            <p>Modular kit · 24 assets</p>
+          </div>
+        </article>
+
+        <article class="gallery__item reveal" data-category="vehicle">
+          <div class="gallery__visual gallery__visual--vehicle">
+            <span class="gallery__label">VEHÍCULO</span>
+          </div>
+          <div class="gallery__info">
+            <h3>Hover Bike X9</h3>
+            <p>Rigged · VFX ready</p>
+          </div>
+        </article>
+
+        <article class="gallery__item gallery__item--wide reveal" data-category="character">
+          <div class="gallery__visual gallery__visual--boss">
+            <span class="gallery__label">BOSS ASSET</span>
+          </div>
+          <div class="gallery__info">
+            <h3>Titan Mech Omega</h3>
+            <p>Cinemática · 180K tris · Full rig</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="proceso">
+      <div class="section__header reveal">
+        <p class="section__tag">// PIPELINE</p>
+        <h2 class="section__title">De concepto a <span class="text-accent">game-ready</span></h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline__step reveal">
+          <div class="timeline__num">01</div>
+          <h3>Brief & Concept</h3>
+          <p>Referencias, moodboard y blockout para alinear visión antes de esculpir.</p>
+        </div>
+        <div class="timeline__step reveal">
+          <div class="timeline__num">02</div>
+          <h3>Modelado & Sculpt</h3>
+          <p>High poly, retopo y UVs con estándares de industria.</p>
+        </div>
+        <div class="timeline__step reveal">
+          <div class="timeline__num">03</div>
+          <h3>Texturizado PBR</h3>
+          <p>Materiales físicos, detalle y variaciones para máxima versatilidad.</p>
+        </div>
+        <div class="timeline__step reveal">
+          <div class="timeline__num">04</div>
+          <h3>Entrega</h3>
+          <p>Archivos optimizados, documentación y soporte post-entrega.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contacto">
+      <div class="cta__glow" aria-hidden="true"></div>
+      <div class="cta__content reveal">
+        <p class="section__tag">// CONTACTO</p>
+        <h2 class="cta__title">¿Listo para elevar tu <span class="text-accent">producción</span>?</h2>
+        <p class="cta__text">Cuéntanos tu proyecto. Respondemos en menos de 24h con propuesta y timeline.</p>
+        <form class="cta__form" id="contact-form">
+          <input type="text" name="nombre" placeholder="Tu nombre" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <select name="tipo" required>
+            <option value="" disabled selected>Tipo de proyecto</option>
+            <option value="character">Personaje</option>
+            <option value="prop">Prop / Arma</option>
+            <option value="environment">Entorno</option>
+            <option value="other">Otro</option>
+          </select>
+          <textarea name="mensaje" placeholder="Describe tu proyecto..." rows="3" required></textarea>
+          <button type="submit" class="btn btn--primary btn--full">Enviar solicitud</button>
+        </form>
+        <p class="cta__note" id="form-status"></p>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
+  <footer class="footer">
+    <div class="footer__brand">
+      <span class="logo__text">NEXUS<span class="logo__accent">3D</span></span>
+      <p>Modelos 3D de alto impacto para la próxima generación de experiencias digitales.</p>
+    </div>
+    <div class="footer__links">
+      <a href="#servicios">Servicios</a>
+      <a href="#portafolio">Portafolio</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <p class="footer__copy">© 2026 NEXUS 3D. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="script.js?v=1"></script>
 </body>
 </html>
