@@ -118,11 +118,13 @@ img {
 }
 
 .logo__img {
-  height: 48px;
+  height: 44px;
   width: auto;
+  max-width: 160px;
   flex-shrink: 0;
-  background: transparent;
+  background: none;
   display: block;
+  object-fit: contain;
 }
 
 .logo__accent {
