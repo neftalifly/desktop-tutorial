@@ -33,7 +33,7 @@ let isScrolling = false;
 let facingMode = "user";
 let statusTimeout = null;
 
-const savedScript = localStorage.getItem("teleprompter-script");
+const savedScript = localStorage.getItem("reloj-checador-script");
 if (savedScript) {
   scriptInput.value = savedScript;
 }
@@ -154,7 +154,7 @@ async function startCamera() {
   startBtn.textContent = "Activando cámara...";
 
   try {
-    localStorage.setItem("teleprompter-script", text);
+    localStorage.setItem("reloj-checador-script", text);
     preparePrompterText();
     applyMirror();
     updateFontLabel();
@@ -256,7 +256,7 @@ function handleRecordingStop() {
 
   resultVideo.src = url;
   downloadLink.href = url;
-  downloadLink.download = `teleprompter-${Date.now()}.${mimeType.includes("mp4") ? "mp4" : "webm"}`;
+  downloadLink.download = `reloj-checador-${Date.now()}.${mimeType.includes("mp4") ? "mp4" : "webm"}`;
 
   stopCamera();
   showScreen(resultScreen);
@@ -312,7 +312,7 @@ newRecordingBtn.addEventListener("click", resetForNewRecording);
 scriptInput.addEventListener(
   "input",
   () => {
-    localStorage.setItem("teleprompter-script", scriptInput.value);
+    localStorage.setItem("reloj-checador-script", scriptInput.value);
   },
   { passive: true }
 );
