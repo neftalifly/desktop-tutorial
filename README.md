@@ -1,5 +1,5 @@
-# Welcome to GitHub Desktop!
+# Reloj Checador
 
-This is your README. READMEs are where you can communicate what your project is and how to use it.
+Escribe tu guion, activa la cámara y graba mientras lees.
 
-Write your name on line 6, save it, and then head back to GitHub Desktop.
+Abre `index.html` en el navegador (HTTPS o localhost) y otorga permisos de cámara y micrófono.
